@@ -1,0 +1,5 @@
+LOAD DATA INTO api-pipeline-tutorial.api_data.exchange_rates_raw (ingestion_timestamp TIMESTAMP, base STRING, date DATE, rates JSON)
+FROM FILES (
+  format = 'JSON',
+  uris = ['gs://api-pipeline-data/raw/exchange_rates/*.json']
+);

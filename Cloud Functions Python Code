@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from google.cloud import storage
 
 API_URL = "https://api.frankfurter.app/latest"
-BUCKET_NAME = "YOUR_BUCKET_NAME"  # change this
+BUCKET_NAME = "exchange_rate_api_bucket"
 
 def call_api():
     response = requests.get(API_URL, timeout=10)
@@ -21,11 +21,9 @@ def main(request):
         "rates": data["rates"]
     }
 
-    # Create filename
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     filename = f"raw/exchange_rates/{timestamp}.json"
 
-    # Write to Cloud Storage
     client = storage.Client()
     bucket = client.bucket(BUCKET_NAME)
     blob = bucket.blob(filename)

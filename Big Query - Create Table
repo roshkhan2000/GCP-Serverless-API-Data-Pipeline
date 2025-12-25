@@ -1,0 +1,6 @@
+CREATE TABLE `api_data.exchange_rates_raw` (
+  ingestion_timestamp TIMESTAMP NOT NULL,
+  base STRING NOT NULL,
+  date DATE NOT NULL,
+  rates JSON NOT NULL
+);

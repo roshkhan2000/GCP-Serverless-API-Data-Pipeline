@@ -35,6 +35,7 @@ Cloud Scheduler (cron) → Cloud Function (Python) → Cloud Storage (JSON) → 
 | Technology | Purpose |
 |------------|---------|
 | **Python 3** | Core programming language |
+| **Cloud Shell** | API call testing |
 | **Google Cloud Functions** | Serverless compute |
 | **Cloud Scheduler** | Automated job orchestration |
 | **Cloud Storage** | Raw data lake (bronze layer) |
@@ -69,12 +70,9 @@ Cloud Scheduler (cron) → Cloud Function (Python) → Cloud Storage (JSON) → 
 gs://<bucket-name>/raw/exchange_rates/<timestamp>.json
 ```
 
-<!-- INSERT CLOUD FUNCTION CODE SCREENSHOT HERE -->
-![Cloud Function Code](images/cloud-function-code.png)
-
 ---
 
-### **Phase 3: Cloud Storage (Raw Data Layer)**
+### **Phase 3: Cloud Storage (Raw Data Layer & Blob Storage)**
 
 **Objective:** Preserve unmodified API responses for reprocessing and audit trails.
 
@@ -84,9 +82,6 @@ gs://<bucket-name>/raw/exchange_rates/<timestamp>.json
 - Exact API response format preserved
 
 This represents the **bronze layer** in a medallion architecture pattern.
-
-<!-- INSERT CLOUD STORAGE FOLDER STRUCTURE HERE -->
-![Cloud Storage Structure](images/storage-structure.png)
 
 ---
 
@@ -100,9 +95,6 @@ This represents the **bronze layer** in a medallion architecture pattern.
 - **Authentication:** OIDC via service account
 
 This replaces AWS EventBridge-style scheduling with GCP-native tooling.
-
-<!-- INSERT CLOUD SCHEDULER CONFIG HERE -->
-![Cloud Scheduler Configuration](images/scheduler-config.png)
 
 ---
 
@@ -125,9 +117,6 @@ CREATE TABLE exchange_rates_raw (
 - `rates` stored as JSON for downstream flexibility
 - `ingestion_timestamp` generated at load time for tracking
 
-<!-- INSERT BIGQUERY TABLE SCHEMA HERE -->
-![BigQuery Table Schema](images/bigquery-schema.png)
-
 ---
 
 ### **Phase 6: Scheduled Load into BigQuery**
@@ -147,9 +136,6 @@ FROM FILES (
 - Load jobs **append by default**
 - BigQuery does not track previously loaded files
 - This is intentional for raw ingestion design
-
-<!-- INSERT SCHEDULED QUERY CONFIG HERE -->
-![Scheduled Query](images/scheduled-query.png)
 
 ---
 
@@ -174,20 +160,6 @@ FROM (
 )
 WHERE rn = 1;
 ```
-
-This reflects **real-world data engineering practices** where raw data is preserved.
-
----
-
-## 🎯 Design Decisions & Tradeoffs
-
-| Decision | Rationale |
-|----------|-----------|
-| **Structured columns + JSON field** | Balance between queryability and flexibility |
-| **Raw data preservation** | Enables reprocessing and full data lineage |
-| **Append-only loads** | Simplifies ingestion; deduplication handled downstream |
-| **Schema immutability** | BigQuery best practice; new tables for schema changes |
-
 ---
 
 ## 🔮 Possible Extensions
@@ -199,41 +171,3 @@ This reflects **real-world data engineering practices** where raw data is preser
 - [ ] Build Looker/Data Studio dashboards on curated data
 - [ ] Implement CI/CD with Cloud Build
 - [ ] Add unit tests and integration tests
-
----
-
-## 📚 What I Learned
-
-- Designing serverless data pipelines with GCP-native services
-- Balancing raw vs curated data layer responsibilities
-- BigQuery loading patterns and idempotency considerations
-- Real-world handling of duplicates in append-only systems
-- Cloud IAM and service account authentication flows
-
----
-
-## 📝 Summary
-
-This project demonstrates:
-
-✅ **Serverless ingestion patterns** using Cloud Functions  
-✅ **Cloud-native scheduling** with Cloud Scheduler  
-✅ **Raw vs curated data design** following medallion architecture  
-✅ **Practical BigQuery loading behavior** and best practices  
-✅ **Real-world duplication handling** with SQL window functions  
-
-**This pipeline is intentionally simple, extensible, and production-aligned.**
-
----
-
-## 🤝 Connect
-
-Feel free to reach out if you'd like to discuss this project or data engineering in general!
-
-- **LinkedIn:** [Your LinkedIn]
-- **Email:** [Your Email]
-- **Portfolio:** [Your Website]
-
----
-
-**⭐ If you found this helpful, please star the repository!**

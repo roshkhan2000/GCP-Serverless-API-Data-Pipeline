@@ -6,13 +6,13 @@ A production-ready, end-to-end serverless data ingestion pipeline built on GCP.
 
 ## 📋 Overview
 
-This project shows a fully serverless data engineering pipeline that ingests data from an Exchange Rates API, stores it in to blob storage, and loads it into a warehouse / table.
+This project shows a fully serverless data engineering pipeline that ingests data from an Frankfurter (Exchange Rates) API, stores it in to blob storage, and loads it into a warehouse / table.
 
 <img width="1844" height="813" alt="image" src="https://github.com/user-attachments/assets/897fbcfc-1ba7-453f-bb5f-89ff975ca51a" />
 
 **The pipeline:**
 - Cloud Scheduler: schedules a Functions code to run every hour
-- Functions (Cloud Run): Python code to call and return Exchange Rates API in JSON
+- Functions (Cloud Run): Python code to call and return Frankfurter API in JSON
 - Google Cloud Storage (GCS): Stores JSON 
 - BigQuery: scheduled to LOAD data from GCS every hour into a table
 
@@ -50,7 +50,7 @@ Cloud Scheduler (cron) → Cloud Function (Python) → Cloud Storage (JSON) → 
 **Objective:** Select a reliable public API and validate response structure.
 
 **Actions:**
-- Chose an API returning JSON data: [Exchange Rates API](https://exchangeratesapi.io/)
+- Chose an API returning JSON data: [Frankfurter API](https://frankfurter.dev/)
 - Tested response format and data consistency using [Cloud Shell](https://github.com/roshkhan2000/GCP-Serverless-API-Data-Pipeline/blob/main/Cloud%20Shell%20API%20Test%20Call)
 
 ---
